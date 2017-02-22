@@ -1,6 +1,6 @@
-//Greetings from Cmder!
+import java.io.*;
 
-public class Organisation
+public abstract class Organisation implements Serializable
 {
     private String name;
     private String contactName;
@@ -8,6 +8,11 @@ public class Organisation
     
     Organisation(String inName, String inContactName, String inContactEmail)
     {
+        if(inName == null || inContactName == null || inContactEmail == null)
+        {
+            throw new IllegalArgumentException("Invalid name");
+        }
+        
         name = inName;
         contactName = inContactName;
         contactEmail = inContactEmail;
@@ -27,6 +32,11 @@ public class Organisation
     
     public void setName(String inName)
     {
+        if(inName == null || inName.equals(""))
+        {
+            throw new IllegalArgumentException("Invalid name");
+        }
+        
         name = inName;
     }
     
@@ -37,6 +47,11 @@ public class Organisation
     
     public void setContactName(String inContactName)
     {
+        if(inContactName == null)
+        {
+            throw new IllegalArgumentException("Invalid contact name");
+        }
+        
         contactName = inContactName;
     }
     
@@ -47,7 +62,16 @@ public class Organisation
     
     public void setContactEmail(String inContactEmail)
     {
+        if(inContactEmail == null || inContactEmail.equals(""))
+        {
+            throw new IllegalArgumentException("Invalid contact email");
+        }
+        
         contactEmail = inContactEmail;
     }
-    
+        
+    public void read()
+    {
+        
+    }
 }
