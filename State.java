@@ -24,5 +24,10 @@ public class State extends Organisation
         parent = inParent;
     }
     
+    public void read()
+    {
+        
+    }
+    
     
 }

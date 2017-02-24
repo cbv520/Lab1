@@ -70,8 +70,5 @@ public abstract class Organisation implements Serializable
         contactEmail = inContactEmail;
     }
         
-    public void read()
-    {
-        
-    }
+    abstract public void read();
 }

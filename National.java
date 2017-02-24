@@ -2,7 +2,7 @@ public class National extends Organisation
 {
     private String sport;
     
-    National(String inName, String inContactName, String inContactEmail, String inSport)
+    National(String inSport, String inName, String inContactName, String inContactEmail)
     {
         super(inName, inContactName, inContactEmail);
         
@@ -17,7 +17,7 @@ public class National extends Organisation
     National(National otherNational)
     {
         super(otherNational);
-        sport = otherNational.getSoprt();
+        sport = otherNational.getSport();
     }
     
     public String getSport()
@@ -33,5 +33,10 @@ public class National extends Organisation
         } 
         
         sport = inSport;
+    }
+    
+    public void read()
+    {
+        
     }
 }

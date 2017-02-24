@@ -8,7 +8,7 @@ public class TestSportsOrgs
 {
 
     @Test
-    public void Test()
+    public void test()
     {
 
     }
