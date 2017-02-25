@@ -29,12 +29,51 @@ public class UnitTestNational
             if(sport.equals(national.getSport()))
             {
                 System.out.println("passed");
-                numTests++;
+                numPassed++;
             }
             else
             {
                 System.out.println("FAILED");
             }
+            
+            System.out.println("Testing getName()");
+            numTests++;
+            if(name.equals(national.getName()))
+            {
+                numPassed++;
+                System.out.println("passed");
+            }
+            else
+            {
+                System.out.println("FAILED");
+            }
+            
+            System.out.println("Testing getContactName()");
+            numTests++;
+            if(contactName.equals(national.getContactName()))
+            {
+                numPassed++;
+                System.out.println("passed");
+            }
+            else
+            {
+                System.out.println("FAILED");
+            }
+            
+            System.out.println("Testing getContactEmail()");
+            numTests++;
+            if(contactEmail.equals(national.getContactEmail()))
+            {
+                numPassed++;
+                System.out.println("passed");
+            }
+            else
+            {
+             System.out.println("FAILED");   
+            }    
+            
+            System.out.println("Normal conditions: " + numPassed + "/" + numTests + " passed");
+            
         }
         catch(IllegalArgumentException e)
         {
