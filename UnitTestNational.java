@@ -12,7 +12,9 @@ public class UnitTestNational
         
         try
         {
+            System.out.println("");
             System.out.println("Testing normal conditions");
+            System.out.println("=========================");
             sport = "Test Sport";
             name = "Test Name";
             contactName = "Test ContactName";
@@ -72,8 +74,6 @@ public class UnitTestNational
              System.out.println("FAILED");   
             }    
             
-            System.out.println("Normal conditions: " + numPassed + "/" + numTests + " passed");
-            
         }
         catch(IllegalArgumentException e)
         {
@@ -84,5 +84,45 @@ public class UnitTestNational
             System.out.println("FAILED");
             e.printStackTrace();
         }
+        
+        System.out.println("");
+        System.out.println("Testing error conditions");
+        System.out.println("=========================");
+        
+        sport = "Test Sport";
+        name = "Test Name";
+        contactName = "Test ContactName";
+        contactEmail = "testemail@testdomain.com";
+        
+        try
+        {
+            numTests++;
+            System.out.println("Testing name = null");
+            sport = null;
+            national = new National(sport, name, contactName, contactEmail);
+            System.out.println("FAILED");
+        }
+        catch(Exception e)
+        {
+            System.out.println("passed");
+            numPassed++;
+        }
+        
+        try
+        {
+            numTests++;
+            System.out.println("Testing name = \"\"");
+            sport = "";
+            national = new National(sport, name, contactName, contactEmail);
+            System.out.println("FAILED");
+        }
+        catch(Exception e)
+        {
+            System.out.println("passed");
+            numPassed++;
+        }
+        
+        System.out.println("");
+        System.out.println("Tests passed: " + numPassed + "/" + numTests + " passed");
     }
 }
