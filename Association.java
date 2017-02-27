@@ -2,6 +2,7 @@ public class Association extends Organisation
 {
     private String shortName;
     private String parent;
+    private Club[] clubs;
     
     Association(String inName, String inShort, String inParent, String inContactName, String inContactEmail)
     {

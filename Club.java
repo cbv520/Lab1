@@ -2,6 +2,8 @@ public class Club extends Organisation
 {
     private String shortName;
     private String parent;
+    private Player[] players;
+    private String[] teams;
     
     Club(String inName, String inShort, String inParent, String inContactName, String inContactEmail)
     {

@@ -12,6 +12,10 @@ public abstract class Organisation implements Serializable
         {
             throw new IllegalArgumentException("Invalid name");
         }
+        if(inName.equals("") || inContactEmail.equals(""))
+        {
+            throw new IllegalArgumentException("Invalid name");
+        }
         
         name = inName;
         contactName = inContactName;

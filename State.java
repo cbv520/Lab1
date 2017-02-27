@@ -1,6 +1,7 @@
 public class State extends Organisation
 {
     private String parent;
+    private Association[] associations;
     
     State(String inName, String inParent, String inContactName, String inContactEmail)
     {
