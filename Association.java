@@ -1,3 +1,5 @@
+import java.io.*;
+
 public class Association extends Organisation
 {
     private String shortName;
@@ -69,6 +71,116 @@ public class Association extends Organisation
 
     public void read(String file, int row)
     {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numClub = 0;
+
+        System.out.println(row);
+
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            for(int i = 0; i < row; i++)
+            {
+                line = bufRdr.readLine();
+            }
+
+            fields = line.split(",");
+            fileStrm.close();
+            processFields(fields);
+            createClubs(file);
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+    }
+
+    private void processFields(String[] fields)
+    {
+        if(!fields[0].equals("ASSOCIATION"))
+        {
+            throw new IllegalArgumentException("Object not of type Association");
+        }
+        else
+        {
+            this.setName(fields[1].split(":")[1]);
+            this.setShort(fields[2].split(":")[1]);
+            this.setParent(fields[3].split(":")[1]);
+            this.setContactName(fields[3].split(":")[1]);
+            this.setContactEmail(fields[4].split(":")[1]);
+        }
+    }
+
+    private void createClubs(String file)
+    {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numClubs = 0;
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("CLUB"))
+                {
+                    if(fields[3].equals("PARENT:"+this.getShort()))
+                    {
+                        numClubs++;
+                    }
+                }
+                line = bufRdr.readLine();
+            }
+
+            clubs = new Club[numClubs];
+
+            fileStrm.close();
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            int clubCount = 0;
+            int rowCount = 0;
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("CLUB"))
+                {
+                    if(fields[3].equals("PARENT:"+this.getShort()))
+                    {
+                        clubs[clubCount] = new Club();
+                        clubs[clubCount].read(file, rowCount+1);
+                        clubCount++;
+                    }
+                }
+                line = bufRdr.readLine();
+                rowCount++;
+            }
+            for(Club c : clubs)
+            {
+                System.out.println(c.getName());
+            }
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
 
     }
+
 }

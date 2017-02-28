@@ -5,6 +5,14 @@ public class Club extends Organisation
     private Player[] players;
     private String[] teams;
 
+    Club()
+    {
+        super("default","default","default");
+        parent = null;
+        players = null;
+        teams = null;
+    }
+
     Club(String inName, String inShort, String inParent, String inContactName, String inContactEmail)
     {
         super(inName, inContactName, inContactEmail);

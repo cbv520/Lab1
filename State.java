@@ -134,7 +134,7 @@ public class State extends Organisation
                     if(fields[3].equals("PARENT:"+this.getName()))
                     {
                         associations[associationCount] = new Association();
-                        associations[associationCount].read(file, rowCount);
+                        associations[associationCount].read(file, rowCount+1);
                         associationCount++;
                     }
                 }
