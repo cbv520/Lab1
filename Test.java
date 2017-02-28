@@ -11,16 +11,16 @@ public class Test
         System.out.println(nat.getName());
         for(State s : nat.getStates())
         {
-            System.out.println("----"+s.getName());
+            System.out.println("|  |"+s.getName());
             for(Association a : s.getAssociations())
             {
-                System.out.println("--------"+a.getName());
+                System.out.println("|  |  |"+a.getName());
                 for(Club c : a.getClubs())
                 {
-                    System.out.println("------------"+c.getName());
+                    System.out.println("|  |  |  |"+c.getName());
                     for(Team t : c.getTeams())
                     {
-                        System.out.println("----------------"+t.getName());
+                        System.out.println("|  |  |  |  |"+t.getName());
                     }
                 }
             }

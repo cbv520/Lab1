@@ -24,6 +24,20 @@ public class Club extends Organisation
         {
             throw new IllegalArgumentException("invalid input");
         }
+        for(Player p : inPlayers)
+        {
+            if(p == null)
+            {
+                throw new IllegalArgumentException("Invalid player");
+            }
+        }
+        for(Team t : inTeams)
+        {
+            if(t == null)
+            {
+                throw new IllegalArgumentException("Invalid teams");
+            }
+        }
 
         shortName = inShort;
         parent = inParent;
@@ -77,6 +91,13 @@ public class Club extends Organisation
 
     public void setTeams(Team[] inTeams)
     {
+        for(Team t : inTeams)
+        {
+            if(t == null)
+            {
+                throw new IllegalArgumentException("Invalid teams");
+            }
+        }
         teams = inTeams;
     }
 
@@ -87,6 +108,13 @@ public class Club extends Organisation
 
     public void setPlayers(Player[] inPlayers)
     {
+        for(Player p : inPlayers)
+        {
+            if(p == null)
+            {
+                throw new IllegalArgumentException("Invalid player");
+            }
+        }
         players = inPlayers;
     }
 

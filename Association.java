@@ -77,6 +77,13 @@ public class Association extends Organisation
 
     public void setClubs(Club[] inClubs)
     {
+        for(Club c : inClubs)
+        {
+            if(c == null)
+            {
+                throw new IllegalArgumentException("Invalid club");
+            }
+        }
         clubs = inClubs;
     }
 
