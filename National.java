@@ -69,6 +69,7 @@ public class National extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
+        int numStates = 0;
 
         try
         {
@@ -76,14 +77,11 @@ public class National extends Organisation
             rdr = new InputStreamReader(fileStrm);
             bufRdr = new BufferedReader(rdr);
 
-            for(int i = 0; i < row; i++)
-            {
-                line = bufRdr.readLine();
-            }
-
-            fileStrm.close();
+            line = bufRdr.readLine();
             fields = line.split(",");
-            processLine(fields);
+            fileStrm.close();
+            processFields(fields);
+            createStates(file);
         }
         catch(IOException e)
         {
@@ -92,7 +90,7 @@ public class National extends Organisation
 
     }
 
-    private void processLine(String[] fields)
+    private void processFields(String[] fields)
     {
         if(!fields[0].equals("NATIONAL"))
         {
@@ -104,11 +102,71 @@ public class National extends Organisation
             this.setName(fields[2].split(":")[1]);
             this.setContactName(fields[3].split(":")[1]);
             this.setContactEmail(fields[4].split(":")[1]);
-
-            System.out.println(sport);
-            System.out.println(getName());
-            System.out.println(getContactName());
-            System.out.println(getContactEmail());
         }
+    }
+
+    private void createStates(String file)
+    {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numStates = 0;
+
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            //get number of states that are under this national
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("STATE"))
+                {
+                    if(fields[2].equals("PARENT:"+this.getName()))
+                    {
+                        numStates++;
+                    }
+                }
+                line = bufRdr.readLine();
+            }
+
+            states = new State[numStates];
+
+            fileStrm.close();
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            //read in all states that are under this national
+            int stateCount = 0;
+            int rowCount = 0;
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("STATE"))
+                {
+                    if(fields[2].equals("PARENT:"+this.getName()))
+                    {
+                        states[stateCount] = new State();
+                        states[stateCount].read(file, rowCount+1);
+                        stateCount++;
+                    }
+                }
+                line = bufRdr.readLine();
+                rowCount++;
+            }
+            System.out.println(states[0].getName());
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+
     }
 }

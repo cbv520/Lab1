@@ -4,17 +4,30 @@ public class Association extends Organisation
     private String parent;
     private Club[] clubs;
 
-    Association(String inName, String inShort, String inParent, String inContactName, String inContactEmail)
+    Association()
+    {
+        super("default","default","default");
+        shortName = "default";
+        parent = "default";
+        clubs = null;
+    }
+
+    Association(String inName, String inShort, String inParent, String inContactName, String inContactEmail, Club[] inClubs)
     {
         super(inName, inContactName, inContactEmail);
 
-        if(inShort == null || inParent == null)
+        if(inShort == null || inParent == null || inClubs == null)
+        {
+            throw new IllegalArgumentException("invalid input");
+        }
+        if(inShort.equals("") || inParent.equals(""))
         {
             throw new IllegalArgumentException("invalid input");
         }
 
         shortName = inShort;
         parent = inParent;
+        clubs = inClubs;
     }
 
     Association(Association otherAssociation)
