@@ -6,11 +6,12 @@ public class Association extends Organisation
     private String parent;
     private Club[] clubs;
 
+     //default constructor should only be used to read in a file
     Association()
     {
-        super("default","default","default");
-        shortName = "default";
-        parent = "default";
+        super("defaultAssociationName","defaultAssociationContactName","defaultAssociationContactEmail");
+        shortName = "defaultAssociationShort";
+        parent = "defaultAssociationParent";
         clubs = null;
     }
 
@@ -69,6 +70,16 @@ public class Association extends Organisation
         parent = inParent;
     }
 
+    public Club[] getClubs()
+    {
+        return clubs;
+    }
+
+    public void setClubs(Club[] inClubs)
+    {
+        clubs = inClubs;
+    }
+
     public void read(String file, int row)
     {
         FileInputStream fileStrm;
@@ -76,9 +87,6 @@ public class Association extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
-        int numClub = 0;
-
-        System.out.println(row);
 
         try
         {
@@ -170,10 +178,6 @@ public class Association extends Organisation
                 }
                 line = bufRdr.readLine();
                 rowCount++;
-            }
-            for(Club c : clubs)
-            {
-                System.out.println(c.getName());
             }
         }
         catch(IOException e)

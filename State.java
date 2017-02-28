@@ -5,10 +5,11 @@ public class State extends Organisation
     private String parent;
     private Association[] associations;
 
+    //default constructor should only be used to read in a file
     State()
     {
-        super("default","default","default");
-        parent = "default";
+        super("defaultStateName","defaultStateContactName","defaultStateContactEmail");
+        parent = "defaultStateParent";
         associations = null;
     }
 
@@ -41,6 +42,16 @@ public class State extends Organisation
         parent = inParent;
     }
 
+    public Association[] getAssociations()
+    {
+        return associations;
+    }
+
+    public void setAssociations(Association[] inAssociations)
+    {
+        associations = inAssociations;
+    }
+
     public void read(String file, int row)
     {
         FileInputStream fileStrm;
@@ -48,7 +59,6 @@ public class State extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
-        int numStates = 0;
 
         try
         {
@@ -141,7 +151,6 @@ public class State extends Organisation
                 line = bufRdr.readLine();
                 rowCount++;
             }
-            System.out.println(associations[0].getName());
         }
         catch(IOException e)
         {

@@ -5,10 +5,11 @@ public class National extends Organisation
     private String sport;
     private State[] states;
 
+    //default constructor should only be used to read in a file
     National()
     {
-        super("default","default","default");
-        sport = "default";
+        super("defaultNatName","defaultNatContactName","defaultNatContactEmail");
+        sport = "defaultNatSport";
         states = null;
     }
 
@@ -69,7 +70,6 @@ public class National extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
-        int numStates = 0;
 
         try
         {
@@ -77,27 +77,43 @@ public class National extends Organisation
             rdr = new InputStreamReader(fileStrm);
             bufRdr = new BufferedReader(rdr);
 
-            line = bufRdr.readLine();
+            //skip to line containing object to be instantiated
+            for(int i = 0; i < row; i++)
+            {
+                line = bufRdr.readLine();
+            }
+
+            //seperate desired line into string array
             fields = line.split(",");
             fileStrm.close();
+
+            //set all private members except aggregated classes
             processFields(fields);
+            //set aggregated classes
             createStates(file);
         }
         catch(IOException e)
         {
             System.out.println("file error: " + e.getMessage());
         }
+    }
 
+    public void write(String file)
+    {
+        
     }
 
     private void processFields(String[] fields)
     {
+        //make sure we are evaluating an entry of type National
         if(!fields[0].equals("NATIONAL"))
         {
             throw new IllegalArgumentException("Object not of type National");
         }
         else
         {
+            //assign values to class members
+            //split needed to remove the prepended identifier
             this.setSport(fields[1].split(":")[1]);
             this.setName(fields[2].split(":")[1]);
             this.setContactName(fields[3].split(":")[1]);
@@ -121,6 +137,7 @@ public class National extends Organisation
             bufRdr = new BufferedReader(rdr);
 
             //get number of states that are under this national
+            //needed to intialise the State array
             line = bufRdr.readLine();
             while(line != null)
             {
@@ -137,6 +154,7 @@ public class National extends Organisation
 
             states = new State[numStates];
 
+            //restart the file input stream
             fileStrm.close();
             fileStrm = new FileInputStream(file);
             rdr = new InputStreamReader(fileStrm);
@@ -161,7 +179,6 @@ public class National extends Organisation
                 line = bufRdr.readLine();
                 rowCount++;
             }
-            System.out.println(states[0].getName());
         }
         catch(IOException e)
         {
