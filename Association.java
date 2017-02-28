@@ -110,6 +110,25 @@ public class Association extends Organisation
         }
     }
 
+    public void write(String file)
+    {
+        FileOutputStream fileStrm;
+        PrintWriter pw;
+
+        try
+        {
+            fileStrm = new FileOutputStream(file, true);
+            pw = new PrintWriter(fileStrm);
+
+            pw.println("ASSOCIATION,NAME:"+getName()+",SHORT:"+shortName+",PARENT:"+parent+",CONTACT_NAME:"+getContactName()+",CONTACT_EMAIL:"+getContactEmail());
+            pw.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+    }
+
     private void processFields(String[] fields)
     {
         if(!fields[0].equals("ASSOCIATION"))
@@ -179,6 +198,7 @@ public class Association extends Organisation
                 line = bufRdr.readLine();
                 rowCount++;
             }
+            fileStrm.close();
         }
         catch(IOException e)
         {

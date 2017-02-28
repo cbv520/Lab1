@@ -25,6 +25,13 @@ public class National extends Organisation
         {
             throw new IllegalArgumentException("invalid states");
         }
+        for(State s : inStates)
+        {
+            if(s == null)
+            {
+                throw new IllegalArgumentException("Invalid states");
+            }
+        }
 
         sport = inSport;
         states = inStates;
@@ -59,6 +66,17 @@ public class National extends Organisation
 
     public void setStates(State[] inStates)
     {
+        if(inStates == null)
+        {
+            throw new IllegalArgumentException("Invalid states");
+        }
+        for(State s : inStates)
+        {
+            if(s == null)
+            {
+                throw new IllegalArgumentException("Invalid states");
+            }
+        }
         states = inStates;
     }
 
@@ -100,7 +118,78 @@ public class National extends Organisation
 
     public void write(String file)
     {
-        
+        FileOutputStream fileStrm;
+        PrintWriter pw;
+
+        try
+        {
+            fileStrm = new FileOutputStream(file);
+            pw = new PrintWriter(fileStrm);
+
+            pw.println("NATIONAL,SPORT:"+sport+",NAME:"+getName()+",CONTACT_NAME:"+getContactName()+",CONTACT_EMAIL:"+getContactEmail());
+            pw.close();
+
+            for(State s : states)
+            {
+                s.write(file);
+            }
+
+            for(State s : states)
+            {
+                for(Association a : s.getAssociations())
+                {
+                    a.write(file);
+                }
+            }
+
+            for(State s : states)
+            {
+                for(Association a : s.getAssociations())
+                {
+                    for(Club c : a.getClubs())
+                    {
+                        c.write(file);
+                    }
+                }
+            }
+
+            for(State s : states)
+            {
+                for(Association a : s.getAssociations())
+                {
+                    for(Club c : a.getClubs())
+                    {
+                        for(Team t : c.getTeams())
+                        {
+                            t.write(file);
+                        }
+                    }
+                }
+            }
+
+            for(State s : states)
+            {
+                for(Association a : s.getAssociations())
+                {
+                    for(Club c : a.getClubs())
+                    {
+                        for(Player p : c.getPlayers())
+                        {
+                            p.write(file);
+                        }
+                    }
+                }
+            }
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error while writing: " + e.getMessage());
+        }
+
     }
 
     private void processFields(String[] fields)
@@ -179,6 +268,7 @@ public class National extends Organisation
                 line = bufRdr.readLine();
                 rowCount++;
             }
+            fileStrm.close();
         }
         catch(IOException e)
         {

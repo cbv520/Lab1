@@ -21,6 +21,13 @@ public class State extends Organisation
         {
             throw new IllegalArgumentException("invalid input");
         }
+        for(Association a : inAssociations)
+        {
+            if(a == null)
+            {
+                throw new IllegalArgumentException("Invalid association");
+            }
+        }
 
         parent = inParent;
         associations = inAssociations;
@@ -39,6 +46,10 @@ public class State extends Organisation
 
     public void setParent(String inParent)
     {
+        if(inParent == null || inParent.equals(""))
+        {
+            throw new IllegalArgumentException("Invalid association");
+        }
         parent = inParent;
     }
 
@@ -49,6 +60,17 @@ public class State extends Organisation
 
     public void setAssociations(Association[] inAssociations)
     {
+        if(inAssociations == null)
+        {
+            throw new IllegalArgumentException("Invalid association");
+        }
+        for(Association a : inAssociations)
+        {
+            if(a == null)
+            {
+                throw new IllegalArgumentException("Invalid association");
+            }
+        }
         associations = inAssociations;
     }
 
@@ -75,6 +97,25 @@ public class State extends Organisation
             fileStrm.close();
             processFields(fields);
             createAssociations(file);
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+    }
+
+    public void write(String file)
+    {
+        FileOutputStream fileStrm;
+        PrintWriter pw;
+
+        try
+        {
+            fileStrm = new FileOutputStream(file, true);
+            pw = new PrintWriter(fileStrm);
+
+            pw.println("STATE,NAME:"+getName()+",PARENT:"+parent+",CONTACT_NAME:"+getContactName()+",CONTACT_EMAIL:"+getContactEmail());
+            pw.close();
         }
         catch(IOException e)
         {
@@ -151,6 +192,7 @@ public class State extends Organisation
                 line = bufRdr.readLine();
                 rowCount++;
             }
+            fileStrm.close();
         }
         catch(IOException e)
         {

@@ -16,17 +16,19 @@ public class Club extends Organisation
         teams = null;
     }
 
-    Club(String inName, String inShort, String inParent, String inContactName, String inContactEmail, Team[] inTeams)
+    Club(String inName, String inShort, String inParent, String inContactName, String inContactEmail, Player[] inPlayers, Team[] inTeams)
     {
         super(inName, inContactName, inContactEmail);
 
-        if(inShort == null || inParent == null)
+        if(inShort == null || inParent == null || inPlayers == null || inTeams == null)
         {
             throw new IllegalArgumentException("invalid input");
         }
 
         shortName = inShort;
         parent = inParent;
+        players = inPlayers;
+        teams = inTeams;
     }
 
     Club(Club otherClub)
@@ -34,6 +36,8 @@ public class Club extends Organisation
         super(otherClub);
         shortName = otherClub.getShort();
         parent = otherClub.getParent();
+        players = otherClub.getPlayers();
+        teams = otherClub.getTeams();
     }
 
     public String getShort()
@@ -76,6 +80,16 @@ public class Club extends Organisation
         teams = inTeams;
     }
 
+    public Player[] getPlayers()
+    {
+        return players;
+    }
+
+    public void setPlayers(Player[] inPlayers)
+    {
+        players = inPlayers;
+    }
+
     public void read(String file, int row)
     {
         FileInputStream fileStrm;
@@ -99,6 +113,26 @@ public class Club extends Organisation
             fileStrm.close();
             processFields(fields);
             createTeams(file);
+            createPlayers(file);
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+    }
+
+    public void write(String file)
+    {
+        FileOutputStream fileStrm;
+        PrintWriter pw;
+
+        try
+        {
+            fileStrm = new FileOutputStream(file, true);
+            pw = new PrintWriter(fileStrm);
+
+            pw.println("CLUB,NAME:"+getName()+",SHORT:"+shortName+",PARENT:"+parent+",CONTACT_NAME:"+getContactName()+",CONTACT_EMAIL:"+getContactEmail());
+            pw.close();
         }
         catch(IOException e)
         {
@@ -175,6 +209,69 @@ public class Club extends Organisation
                 line = bufRdr.readLine();
                 rowCount++;
             }
+            fileStrm.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+
+    }
+
+    private void createPlayers(String file)
+    {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numPlayers = 0;
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("PLAYER"))
+                {
+                    if(fields[2].equals("CLUB:"+this.getShort()))
+                    {
+                        numPlayers++;
+                    }
+                }
+                line = bufRdr.readLine();
+            }
+
+            players = new Player[numPlayers];
+
+            fileStrm.close();
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            int playerCount = 0;
+            int rowCount = 0;
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("PLAYER"))
+                {
+                    if(fields[2].equals("CLUB:"+this.getShort()))
+                    {
+                        players[playerCount] = new Player();
+                        players[playerCount].read(file, rowCount+1);
+                        playerCount++;
+                    }
+                }
+                line = bufRdr.readLine();
+                rowCount++;
+            }
+            fileStrm.close();
         }
         catch(IOException e)
         {

@@ -1,75 +1,107 @@
-public class Player
+import java.io.*;
+
+public class Player extends Person
 {
-    private String name;
     private String club;
-    private String email;
-    
-    Player(String inName, String inClub, String inEmail)
+
+    Player()
     {
-        if(inName == null || inClub == null || inEmail == null)
-        {
-            throw new IllegalArgumentException("invalid input");
-        }
-        
-        name = inName;
-        club = inClub;
-        email = inEmail;
+        super("defaultPlayerName","defaultPlayerEmail","defaultPlayerDOB");
+        club = "defaultPlayerClub";
     }
-    
+
+    Player(String inName, String inClub, String inEmail, String inDOB)
+    {
+        super(inName, inEmail, inDOB);
+
+        if(inClub == null || inClub.equals(""))
+        {
+            throw new IllegalArgumentException("invalid club");
+        }
+
+        club = inClub;
+    }
+
     Player(Player otherPlayer)
     {
-        name = otherPlayer.getName();
+        super(otherPlayer);
         club = otherPlayer.getClub();
-        email = otherPlayer.getEmail();
-    }
-    
-    public String getName()
-    {
-        return name;
-    }
-    
-    public void setName(String inName)
-    {
-        if(inName == null || inName.equals(""))
-        {
-            throw new IllegalArgumentException("invalid name");
-        }
-        
-        name = inName;
     }
 
     public String getClub()
     {
         return club;
     }
-    
+
     public void setClub(String inClub)
     {
         if(inClub == null || inClub.equals(""))
         {
             throw new IllegalArgumentException("invalid club");
         }
-        
+
         club = inClub;
     }
-    
-    public String getEmail()
+
+    public void read(String file, int row)
     {
-        return email;
-    }
-    
-    public void setEmail(String inEmail)
-    {
-        if(inEmail == null || inEmail.equals(""))
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+
+        try
         {
-            throw new IllegalArgumentException("invalid email");
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            for(int i = 0; i < row; i++)
+            {
+                line = bufRdr.readLine();
+            }
+
+            fields = line.split(",");
+            fileStrm.close();
+            processFields(fields);
         }
-        
-        email = inEmail;
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
     }
-    
-    public void read()
+
+    private void processFields(String[] fields)
     {
-        
+        if(!fields[0].equals("PLAYER"))
+        {
+            throw new IllegalArgumentException("Object not of type Team");
+        }
+        else
+        {
+            this.setName(fields[1].split(":")[1]);
+            this.setClub(fields[2].split(":")[1]);
+            this.setEmail(fields[3].split(":")[1]);
+        }
+    }
+
+    public void write(String file)
+    {
+        FileOutputStream fileStrm;
+        PrintWriter pw;
+
+        try
+        {
+            fileStrm = new FileOutputStream(file, true);
+            pw = new PrintWriter(fileStrm);
+
+            pw.println("PLAYER,NAME:"+getName()+",CLUB:"+club+",CONTACT_EMAIL:"+getEmail());
+            pw.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
     }
 }
