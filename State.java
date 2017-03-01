@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class State extends Organisation
+public class State extends Organisation implements Serializable
 {
     private String parent;
     private Association[] associations;
@@ -18,6 +18,10 @@ public class State extends Organisation
         super(inName, inContactName, inContactEmail);
 
         if(inParent == null || inAssociations == null)
+        {
+            throw new IllegalArgumentException("invalid input");
+        }
+        if(inParent.equals("") || inAssociations.equals(""))
         {
             throw new IllegalArgumentException("invalid input");
         }
@@ -145,31 +149,11 @@ public class State extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
-        int numAssociations = 0;
+
+        countChildAssociations(file);
 
         try
         {
-            fileStrm = new FileInputStream(file);
-            rdr = new InputStreamReader(fileStrm);
-            bufRdr = new BufferedReader(rdr);
-
-            line = bufRdr.readLine();
-            while(line != null)
-            {
-                fields = line.split(",");
-                if(fields[0].equals("ASSOCIATION"))
-                {
-                    if(fields[3].equals("PARENT:"+this.getName()))
-                    {
-                        numAssociations++;
-                    }
-                }
-                line = bufRdr.readLine();
-            }
-
-            associations = new Association[numAssociations];
-
-            fileStrm.close();
             fileStrm = new FileInputStream(file);
             rdr = new InputStreamReader(fileStrm);
             bufRdr = new BufferedReader(rdr);
@@ -199,6 +183,45 @@ public class State extends Organisation
             System.out.println("file error: " + e.getMessage());
         }
 
+    }
+
+    private void countChildAssociations(String file)
+    {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numAssociations = 0;
+
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("ASSOCIATION"))
+                {
+                    if(fields[3].equals("PARENT:"+this.getName()))
+                    {
+                        numAssociations++;
+                    }
+                }
+                line = bufRdr.readLine();
+            }
+
+            associations = new Association[numAssociations];
+
+            fileStrm.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
     }
 
 }

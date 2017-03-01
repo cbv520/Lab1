@@ -116,8 +116,9 @@ public class UnitTestNational
         try
         {
             numTests++;
-            System.out.println("Testing name = null in constructor");
-            sport = null;
+            System.out.println("Testing constructor - empty string");
+            name = ""; //testing Organisation
+            sport = ""; // testing National
             national = new National(sport, name, contactName, contactEmail, states);
             System.out.println("FAILED");
         }
@@ -126,12 +127,16 @@ public class UnitTestNational
             System.out.println("passed");
             numPassed++;
         }
+        name = "Test Name";
+        sport = "Test Sport";
+        national = new National(sport, name, contactName, contactEmail, states);
 
         try
         {
             numTests++;
-            System.out.println("Testing name = \"\" in constructor");
-            sport = "";
+            System.out.println("Testing constructor - null string");
+            name = null; // testing Organisation
+            sport = null; //testing National
             national = new National(sport, name, contactName, contactEmail, states);
             System.out.println("FAILED");
         }
@@ -139,16 +144,31 @@ public class UnitTestNational
         {
             System.out.println("passed");
             numPassed++;
-            sport = "Test Sport";
-            national = new National(sport, name, contactName, contactEmail, states);
         }
+        name = "Test Name";
+        sport = "Test Sport";
+        national = new National(sport, name, contactName, contactEmail, states);
+
+        try
+        {
+            numTests++;
+            System.out.println("Testing constructor - null array element");
+            states[0] = null;
+            national = new National(sport, name, contactName, contactEmail, states);
+            System.out.println("FAILED");
+        }
+        catch(Exception e)
+        {
+            System.out.println("passed");
+            numPassed++;
+        }
+        states[0] = new State();
+        national = new National(sport, name, contactName, contactEmail, states);
 
         try
         {
             numTests++;
             System.out.println("Testing setSport()");
-            sport = null;
-            national.setSport(sport);
             sport = "";
             national.setSport(sport);
             System.out.println("FAILED");
@@ -163,8 +183,6 @@ public class UnitTestNational
         {
             numTests++;
             System.out.println("Testing setName()");
-            name = null;
-            national.setName(name);
             name = "";
             national.setName(name);
             System.out.println("FAILED");
@@ -193,8 +211,6 @@ public class UnitTestNational
         {
             numTests++;
             System.out.println("Testing setContactEmail()");
-            contactEmail = null;
-            national.setContactEmail(contactEmail);
             contactEmail = "";
             national.setContactEmail(contactEmail);
             System.out.println("FAILED");
@@ -210,8 +226,6 @@ public class UnitTestNational
             numTests++;
             System.out.println("Testing setStates()");
             states[0] = null;
-            national.setStates(states);
-            states = null;
             national.setStates(states);
             System.out.println("FAILED");
         }

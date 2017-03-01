@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Association extends Organisation
+public class Association extends Organisation implements Serializable
 {
     private String shortName;
     private String parent;
@@ -26,6 +26,13 @@ public class Association extends Organisation
         if(inShort.equals("") || inParent.equals(""))
         {
             throw new IllegalArgumentException("invalid input");
+        }
+        for(Club c : inClubs)
+        {
+            if(c == null)
+            {
+                throw new IllegalArgumentException("invalid club");
+            }
         }
 
         shortName = inShort;
@@ -159,30 +166,11 @@ public class Association extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
-        int numClubs = 0;
+
+        countChildClubs(file);
+
         try
         {
-            fileStrm = new FileInputStream(file);
-            rdr = new InputStreamReader(fileStrm);
-            bufRdr = new BufferedReader(rdr);
-
-            line = bufRdr.readLine();
-            while(line != null)
-            {
-                fields = line.split(",");
-                if(fields[0].equals("CLUB"))
-                {
-                    if(fields[3].equals("PARENT:"+this.getShort()))
-                    {
-                        numClubs++;
-                    }
-                }
-                line = bufRdr.readLine();
-            }
-
-            clubs = new Club[numClubs];
-
-            fileStrm.close();
             fileStrm = new FileInputStream(file);
             rdr = new InputStreamReader(fileStrm);
             bufRdr = new BufferedReader(rdr);
@@ -212,6 +200,45 @@ public class Association extends Organisation
             System.out.println("file error: " + e.getMessage());
         }
 
+    }
+
+    private void countChildClubs(String file)
+    {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numClubs = 0;
+
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("CLUB"))
+                {
+                    if(fields[3].equals("PARENT:"+this.getShort()))
+                    {
+                        numClubs++;
+                    }
+                }
+                line = bufRdr.readLine();
+            }
+
+            clubs = new Club[numClubs];
+
+            fileStrm.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
     }
 
 }

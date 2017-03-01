@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Team extends Organisation
+public class Team extends Organisation implements Serializable
 {
     private String parent;
 
@@ -15,7 +15,7 @@ public class Team extends Organisation
     {
         super(inName, inContactName, inContactEmail);
 
-        if(inParent == null)
+        if(inParent == null || inParent.equals(""))
         {
             throw new IllegalArgumentException("invalid parent");
         }

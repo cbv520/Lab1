@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class National extends Organisation
+public class National extends Organisation implements Serializable
 {
     private String sport;
     private State[] states;
@@ -80,6 +80,10 @@ public class National extends Organisation
         states = inStates;
     }
 
+    public void read(String file)
+    {
+        read(file, 1);
+    }
 
     public void read(String file, int row)
     {
@@ -129,57 +133,11 @@ public class National extends Organisation
             pw.println("NATIONAL,SPORT:"+sport+",NAME:"+getName()+",CONTACT_NAME:"+getContactName()+",CONTACT_EMAIL:"+getContactEmail());
             pw.close();
 
-            for(State s : states)
-            {
-                s.write(file);
-            }
-
-            for(State s : states)
-            {
-                for(Association a : s.getAssociations())
-                {
-                    a.write(file);
-                }
-            }
-
-            for(State s : states)
-            {
-                for(Association a : s.getAssociations())
-                {
-                    for(Club c : a.getClubs())
-                    {
-                        c.write(file);
-                    }
-                }
-            }
-
-            for(State s : states)
-            {
-                for(Association a : s.getAssociations())
-                {
-                    for(Club c : a.getClubs())
-                    {
-                        for(Team t : c.getTeams())
-                        {
-                            t.write(file);
-                        }
-                    }
-                }
-            }
-
-            for(State s : states)
-            {
-                for(Association a : s.getAssociations())
-                {
-                    for(Club c : a.getClubs())
-                    {
-                        for(Player p : c.getPlayers())
-                        {
-                            p.write(file);
-                        }
-                    }
-                }
-            }
+            writeStates(file);
+            writeAssociations(file);
+            writeClubs(file);
+            writeTeams(file);
+            writePlayers(file);
         }
         catch(IOException e)
         {
@@ -217,34 +175,11 @@ public class National extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
-        int numStates = 0;
+
+        countChildStates(file);
 
         try
         {
-            fileStrm = new FileInputStream(file);
-            rdr = new InputStreamReader(fileStrm);
-            bufRdr = new BufferedReader(rdr);
-
-            //get number of states that are under this national
-            //needed to intialise the State array
-            line = bufRdr.readLine();
-            while(line != null)
-            {
-                fields = line.split(",");
-                if(fields[0].equals("STATE"))
-                {
-                    if(fields[2].equals("PARENT:"+this.getName()))
-                    {
-                        numStates++;
-                    }
-                }
-                line = bufRdr.readLine();
-            }
-
-            states = new State[numStates];
-
-            //restart the file input stream
-            fileStrm.close();
             fileStrm = new FileInputStream(file);
             rdr = new InputStreamReader(fileStrm);
             bufRdr = new BufferedReader(rdr);
@@ -275,5 +210,114 @@ public class National extends Organisation
             System.out.println("file error: " + e.getMessage());
         }
 
+    }
+
+    private void countChildStates(String file)
+    {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numStates = 0;
+
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            //get number of states that are under this national
+            //needed to intialise the State array
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("STATE"))
+                {
+                    if(fields[2].equals("PARENT:"+this.getName()))
+                    {
+                        numStates++;
+                    }
+                }
+                line = bufRdr.readLine();
+            }
+
+            states = new State[numStates];
+
+            //restart the file input stream
+            fileStrm.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+    }
+
+    private void writeStates(String file)
+    {
+        for(State s : states)
+        {
+            s.write(file);
+        }
+    }
+
+    private void writeAssociations(String file)
+    {
+        for(State s : states)
+        {
+            for(Association a : s.getAssociations())
+            {
+                a.write(file);
+            }
+        }
+    }
+
+    private void writeClubs(String file)
+    {
+        for(State s : states)
+        {
+            for(Association a : s.getAssociations())
+            {
+                for(Club c : a.getClubs())
+                {
+                    c.write(file);
+                }
+            }
+        }
+    }
+
+    private void writeTeams(String file)
+    {
+        for(State s : states)
+        {
+            for(Association a : s.getAssociations())
+            {
+                for(Club c : a.getClubs())
+                {
+                    for(Team t : c.getTeams())
+                    {
+                        t.write(file);
+                    }
+                }
+            }
+        }
+    }
+
+    private void writePlayers(String file)
+    {
+        for(State s : states)
+        {
+            for(Association a : s.getAssociations())
+            {
+                for(Club c : a.getClubs())
+                {
+                    for(Player p : c.getPlayers())
+                    {
+                        p.write(file);
+                    }
+                }
+            }
+        }
     }
 }

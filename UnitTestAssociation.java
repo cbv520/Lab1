@@ -92,9 +92,9 @@ public class UnitTestAssociation
 
         try
         {
-            System.out.println("Testing constructor");
+            System.out.println("Testing constructor - empty string");
             numTests++;
-            name = "";
+            shortName = "";
             association = new Association(name, shortName, parent, contactName, contactEmail, clubs);
             System.out.println("FAILED");
         }
@@ -102,9 +102,41 @@ public class UnitTestAssociation
         {
             System.out.println("passed");
             numPassed++;
-            name = "Test Name";
-            association = new Association(name, shortName, parent, contactName, contactEmail, clubs);
         }
+        shortName = "Test Short";
+        association = new Association(name, shortName, parent, contactName, contactEmail, clubs);
+
+        try
+        {
+            System.out.println("Testing constructor - null string");
+            numTests++;
+            shortName = null;
+            association = new Association(name, shortName, parent, contactName, contactEmail, clubs);
+            System.out.println("FAILED");
+        }
+        catch(Exception e)
+        {
+            System.out.println("passed");
+            numPassed++;
+        }
+        shortName = "Test Short";
+        association = new Association(name, shortName, parent, contactName, contactEmail, clubs);
+
+        try
+        {
+            System.out.println("Testing constructor - null array element");
+            numTests++;
+            clubs[0] = null;
+            association = new Association(name, shortName, parent, contactName, contactEmail, clubs);
+            System.out.println("FAILED");
+        }
+        catch(Exception e)
+        {
+            System.out.println("passed");
+            numPassed++;
+        }
+        clubs[0] = new Club();
+        association = new Association(name, shortName, parent, contactName, contactEmail, clubs);
 
         try
         {

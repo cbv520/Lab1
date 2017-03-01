@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Player extends Person
+public class Player extends Person implements Serializable
 {
     private String club;
 

@@ -1,4 +1,6 @@
-public class Person
+import java.io.*;
+
+public class Person  implements Serializable
 {
     private String name;
     private String email;
@@ -6,6 +8,15 @@ public class Person
 
     Person(String inName, String inEmail, String inDOB)
     {
+        if(inName == null || inEmail == null || inDOB == null)
+        {
+            throw new IllegalArgumentException("invalid input");
+        }
+        if(inName.equals("") || inEmail.equals("") || inDOB.equals(""))
+        {
+            throw new IllegalArgumentException("invalid input");
+        }
+
         name = inName;
         email = inEmail;
         dateBirth = inDOB;
@@ -53,7 +64,7 @@ public class Person
         return dateBirth;
     }
 
-    public void set(String inDOB)
+    public void setDateBirth(String inDOB)
     {
         if(inDOB == null || inDOB.equals(""))
         {

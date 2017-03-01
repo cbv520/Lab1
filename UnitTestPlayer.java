@@ -1,43 +1,35 @@
-public class UnitTestClub
+public class UnitTestPlayer
 {
     public static void main(String args[])
     {
-        Club club;
+        Player player;
         String name;
-        String shortName;
-        String parent;
-        String contactName;
         String contactEmail;
-        Team[] teams;
-        Player[] players;
+        String club;
+        String dob;
         int numTests = 0;
         int numPassed = 0;
 
         System.out.println("");
-        System.out.println("testing: class Club");
+        System.out.println("testing: abstract class Person and class Player");
         System.out.println("");
         System.out.println("Testing normal conditions");
         System.out.println("=========================");
         name = "Test Name";
-        shortName = "Test short";
-        parent = "Test Parent";
-        contactName = "Test ContactName";
+        club = "Test Club";
+        dob = "Test date of birth";
         contactEmail = "testemail@testdomain.com";
-        teams = new Team[1];
-        teams[0] = new Team();
-        players = new Player[1];
-        players[0] = new Player();
         try
         {
             System.out.println("Testing constructor");
             numTests++;
-            club = new Club(name, shortName, parent, contactName, contactEmail, players, teams);
+            player = new Player(name, club, contactEmail, dob);
             System.out.println("passed");
             numPassed++;
 
-            System.out.println("Testing getShort()");
+            System.out.println("Testing getName()");
             numTests++;
-            if(shortName.equals(club.getShort()))
+            if(name.equals(player.getName()))
             {
                 System.out.println("passed");
                 numPassed++;
@@ -47,9 +39,9 @@ public class UnitTestClub
                 System.out.println("FAILED");
             }
 
-            System.out.println("Testing getParent()");
+            System.out.println("Testing getClub()");
             numTests++;
-            if(parent.equals(club.getParent()))
+            if(club.equals(player.getClub()))
             {
                 System.out.println("passed");
                 numPassed++;
@@ -59,9 +51,9 @@ public class UnitTestClub
                 System.out.println("FAILED");
             }
 
-            System.out.println("Testing getPlayers()");
+            System.out.println("Testing getEmail()");
             numTests++;
-            if(players.equals(club.getPlayers()))
+            if(contactEmail.equals(player.getEmail()))
             {
                 System.out.println("passed");
                 numPassed++;
@@ -71,9 +63,9 @@ public class UnitTestClub
                 System.out.println("FAILED");
             }
 
-            System.out.println("Testing getTeams()");
+            System.out.println("Testing getDateBirth()");
             numTests++;
-            if(teams.equals(club.getTeams()))
+            if(dob.equals(player.getDateBirth()))
             {
                 System.out.println("passed");
                 numPassed++;
@@ -97,22 +89,18 @@ public class UnitTestClub
         System.out.println("Testing error conditions");
         System.out.println("=========================");
         name = "Test Name";
-        shortName = "Test short";
-        parent = "Test Parent";
-        contactName = "Test ContactName";
+        club = "Test Club";
+        dob = "Test date of birth";
         contactEmail = "testemail@testdomain.com";
-        teams = new Team[1];
-        teams[0] = new Team();
-        players = new Player[1];
-        players[0] = new Player();
-        club = new Club(name, shortName, parent, contactName, contactEmail, players, teams);
+        player = new Player(name, club, contactEmail, dob);
 
         try
         {
             System.out.println("Testing constructor - empty string");
             numTests++;
-            shortName = "";
-            club = new Club(name, shortName, parent, contactName, contactEmail, players, teams);
+            name = "";
+            club = "";
+            player = new Player(name, club, contactEmail, dob);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -120,15 +108,17 @@ public class UnitTestClub
             System.out.println("passed");
             numPassed++;
         }
-        shortName = "Test Short";
-        club = new Club(name, shortName, parent, contactName, contactEmail, players, teams);
+        name = "Test Name";
+        club = "Test Club";
+        player = new Player(name, club, contactEmail, dob);
 
         try
         {
             System.out.println("Testing constructor - null string");
             numTests++;
-            shortName = null;
-            club = new Club(name, shortName, parent, contactName, contactEmail, players, teams);
+            name = null;
+            club = null;
+            player = new Player(name, club, contactEmail, dob);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -136,33 +126,18 @@ public class UnitTestClub
             System.out.println("passed");
             numPassed++;
         }
-        shortName = "Test Short";
-        club = new Club(name, shortName, parent, contactName, contactEmail, players, teams);
+        name = "Test Name";
+        club = "Test Club";
+        player = new Player(name, club, contactEmail, dob);
 
         try
         {
-            System.out.println("Testing constructor - null array element");
+            System.out.println("Testing setName()");
             numTests++;
-            teams[0] = null;
-            club = new Club(name, shortName, parent, contactName, contactEmail, players, teams);
-            System.out.println("FAILED");
-        }
-        catch(Exception e)
-        {
-            System.out.println("passed");
-            numPassed++;
-        }
-        teams[0] = new Team();
-        club = new Club(name, shortName, parent, contactName, contactEmail, players, teams);
-
-        try
-        {
-            System.out.println("Testing setShort()");
-            numTests++;
-            shortName = "";
-            club.setShort(shortName);
-            shortName = null;
-            club.setShort(shortName);
+            name = "";
+            player.setName(name);
+            name = null;
+            player.setName(name);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -173,12 +148,12 @@ public class UnitTestClub
 
         try
         {
-            System.out.println("Testing setParent()");
+            System.out.println("Testing setClub()");
             numTests++;
-            parent = "";
-            club.setParent(parent);
-            parent = null;
-            club.setParent(parent);
+            club = "";
+            player.setClub(club);
+            club = null;
+            player.setClub(club);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -189,12 +164,12 @@ public class UnitTestClub
 
         try
         {
-            System.out.println("Testing setPlayers()");
+            System.out.println("Testing setEmail()");
             numTests++;
-            players[0] = null;
-            club.setPlayers(players);
-            players = null;
-            club.setPlayers(players);
+            contactEmail = "";
+            player.setEmail(contactEmail);
+            contactEmail = null;
+            player.setEmail(contactEmail);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -205,12 +180,12 @@ public class UnitTestClub
 
         try
         {
-            System.out.println("Testing setTeams()");
+            System.out.println("Testing setDateBirth()");
             numTests++;
-            teams[0] = null;
-            club.setTeams(teams);
-            teams = null;
-            club.setTeams(teams);
+            dob = "";
+            player.setDateBirth(dob);
+            dob = null;
+            player.setDateBirth(dob);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -218,7 +193,6 @@ public class UnitTestClub
             System.out.println("passed");
             numPassed++;
         }
-
         System.out.println("");
         System.out.println("Tests passed: " + numPassed + "/" + numTests);
     }

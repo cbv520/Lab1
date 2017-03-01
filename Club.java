@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Club extends Organisation
+public class Club extends Organisation implements Serializable
 {
     private String shortName;
     private String parent;
@@ -21,6 +21,10 @@ public class Club extends Organisation
         super(inName, inContactName, inContactEmail);
 
         if(inShort == null || inParent == null || inPlayers == null || inTeams == null)
+        {
+            throw new IllegalArgumentException("invalid input");
+        }
+        if(inShort.equals("") || inParent.equals(""))
         {
             throw new IllegalArgumentException("invalid input");
         }
@@ -191,30 +195,11 @@ public class Club extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
-        int numTeams = 0;
+
+        countChildTeams(file);
+
         try
         {
-            fileStrm = new FileInputStream(file);
-            rdr = new InputStreamReader(fileStrm);
-            bufRdr = new BufferedReader(rdr);
-
-            line = bufRdr.readLine();
-            while(line != null)
-            {
-                fields = line.split(",");
-                if(fields[0].equals("TEAM"))
-                {
-                    if(fields[2].equals("PARENT:"+this.getShort()))
-                    {
-                        numTeams++;
-                    }
-                }
-                line = bufRdr.readLine();
-            }
-
-            teams = new Team[numTeams];
-
-            fileStrm.close();
             fileStrm = new FileInputStream(file);
             rdr = new InputStreamReader(fileStrm);
             bufRdr = new BufferedReader(rdr);
@@ -253,30 +238,11 @@ public class Club extends Organisation
         BufferedReader bufRdr;
         String line = null;
         String[] fields = null;
-        int numPlayers = 0;
+
+        countChildPlayers(file);
+
         try
         {
-            fileStrm = new FileInputStream(file);
-            rdr = new InputStreamReader(fileStrm);
-            bufRdr = new BufferedReader(rdr);
-
-            line = bufRdr.readLine();
-            while(line != null)
-            {
-                fields = line.split(",");
-                if(fields[0].equals("PLAYER"))
-                {
-                    if(fields[2].equals("CLUB:"+this.getShort()))
-                    {
-                        numPlayers++;
-                    }
-                }
-                line = bufRdr.readLine();
-            }
-
-            players = new Player[numPlayers];
-
-            fileStrm.close();
             fileStrm = new FileInputStream(file);
             rdr = new InputStreamReader(fileStrm);
             bufRdr = new BufferedReader(rdr);
@@ -306,5 +272,83 @@ public class Club extends Organisation
             System.out.println("file error: " + e.getMessage());
         }
 
+    }
+
+    private void countChildTeams(String file)
+    {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numTeams = 0;
+
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("TEAM"))
+                {
+                    if(fields[2].equals("PARENT:"+this.getShort()))
+                    {
+                        numTeams++;
+                    }
+                }
+                line = bufRdr.readLine();
+            }
+
+            teams = new Team[numTeams];
+
+            fileStrm.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
+    }
+
+    private void countChildPlayers(String file)
+    {
+        FileInputStream fileStrm;
+        InputStreamReader rdr;
+        BufferedReader bufRdr;
+        String line = null;
+        String[] fields = null;
+        int numPlayers = 0;
+
+        try
+        {
+            fileStrm = new FileInputStream(file);
+            rdr = new InputStreamReader(fileStrm);
+            bufRdr = new BufferedReader(rdr);
+
+            line = bufRdr.readLine();
+            while(line != null)
+            {
+                fields = line.split(",");
+                if(fields[0].equals("PLAYER"))
+                {
+                    if(fields[2].equals("CLUB:"+this.getShort()))
+                    {
+                        numPlayers++;
+                    }
+                }
+                line = bufRdr.readLine();
+            }
+
+            players = new Player[numPlayers];
+
+            fileStrm.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("file error: " + e.getMessage());
+        }
     }
 }

@@ -1,18 +1,17 @@
-public class UnitTestState
+public class UnitTestTeam
 {
     public static void main(String args[])
     {
-        State state;
+        Team team;
         String name;
         String contactName;
         String contactEmail;
         String parent;
-        Association[] associations;
         int numTests = 0;
         int numPassed = 0;
 
         System.out.println("");
-        System.out.println("testing: class State");
+        System.out.println("testing: class Team");
         System.out.println("");
         System.out.println("Testing normal conditions");
         System.out.println("=========================");
@@ -20,31 +19,17 @@ public class UnitTestState
         parent = "Test Parent";
         contactName = "Test ContactName";
         contactEmail = "testemail@testdomain.com";
-        associations = new Association[1];
-        associations[0] = new Association();
         try
         {
             System.out.println("Testing constructor");
             numTests++;
-            state = new State(name, parent, contactName, contactEmail, associations);
+            team = new Team(name, parent, contactName, contactEmail);
             System.out.println("passed");
             numPassed++;
 
             System.out.println("Testing getParent()");
             numTests++;
-            if(parent.equals(state.getParent()))
-            {
-                System.out.println("passed");
-                numPassed++;
-            }
-            else
-            {
-                System.out.println("FAILED");
-            }
-
-            System.out.println("Testing getAssociations()");
-            numTests++;
-            if(associations.equals(state.getAssociations()))
+            if(parent.equals(team.getParent()))
             {
                 System.out.println("passed");
                 numPassed++;
@@ -71,16 +56,14 @@ public class UnitTestState
         parent = "Test Parent";
         contactName = "Test ContactName";
         contactEmail = "testemail@testdomain.com";
-        associations = new Association[1];
-        associations[0] = new Association();
-        state = new State(name, parent, contactName, contactEmail, associations);
+        team = new Team(name, parent, contactName, contactEmail);
 
         try
         {
             System.out.println("Testing constructor - empty string");
             numTests++;
             parent = "";
-            state = new State(name, parent, contactName, contactEmail, associations);
+            team = new Team(name, parent, contactName, contactEmail);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -89,14 +72,14 @@ public class UnitTestState
             numPassed++;
         }
         parent = "Test Parent";
-        state = new State(name, parent, contactName, contactEmail, associations);
+        team = new Team(name, parent, contactName, contactEmail);
 
         try
         {
             System.out.println("Testing constructor - null string");
             numTests++;
             parent = null;
-            state = new State(name, parent, contactName, contactEmail, associations);
+            team = new Team(name, parent, contactName, contactEmail);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -105,32 +88,14 @@ public class UnitTestState
             numPassed++;
         }
         parent = "Test Parent";
-        state = new State(name, parent, contactName, contactEmail, associations);
-
-        try
-        {
-            System.out.println("Testing constructor - null array element");
-            numTests++;
-            associations[0] = null;
-            state = new State(name, parent, contactName, contactEmail, associations);
-            System.out.println("FAILED");
-        }
-        catch(Exception e)
-        {
-            System.out.println("passed");
-            numPassed++;
-        }
-        associations[0] = new Association();
-        state = new State(name, parent, contactName, contactEmail, associations);
+        team = new Team(name, parent, contactName, contactEmail);
 
         try
         {
             System.out.println("Testing setParent()");
             numTests++;
             parent = "";
-            state.setParent(parent);
-            parent = null;
-            state.setParent(parent);
+            team.setParent(parent);
             System.out.println("FAILED");
         }
         catch(Exception e)
@@ -138,23 +103,6 @@ public class UnitTestState
             System.out.println("passed");
             numPassed++;
         }
-
-        try
-        {
-            System.out.println("Testing setAssociations()");
-            numTests++;
-            associations[0] = null;
-            state.setAssociations(associations);
-            associations = null;
-            state.setAssociations(associations);
-            System.out.println("FAILED");
-        }
-        catch(Exception e)
-        {
-            System.out.println("passed");
-            numPassed++;
-        }
-
         System.out.println("");
         System.out.println("Tests passed: " + numPassed + "/" + numTests);
     }
